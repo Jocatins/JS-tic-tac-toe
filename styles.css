@@ -1,0 +1,169 @@
+/*select all the elements in the box  */
+
+*, *::after, *::before {
+    box-sizing: border-box;
+  }
+/* CSS variables */
+  
+  :root {
+    --cell-size: 100px;
+    --mark-size: calc(var(--cell-size) * .9);
+  }
+  
+  body {
+    /* To remove all the margin from the page */
+
+    margin: 0;
+  }
+  
+  .board {
+    /* To make the board fill the entire screen, making it easier to center */
+
+    width: 100vw;
+    height: 100vh;
+    /* To layout items in a grid */
+
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    /* To ensure that our Xs and Os are always centred inside the box, to align items in the cell  */
+
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: repeat(3, auto)
+  }
+  
+  .cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .cell:first-child,
+  .cell:nth-child(2),
+  .cell:nth-child(3) {
+      border-top: none;
+    }
+    /* For the left three cells. 3 * 1  + 1= 4th cell e.t.c */
+  
+  .cell:nth-child(3n + 1) {
+    border-left: none;
+  }
+/* For the right three cells. 3 *3 +3= 6th cell and for the 9th cell e.t.c */
+  
+  .cell:nth-child(3n + 3) {
+    border-right: none;
+  }
+/* For the bottom border */
+  
+  .cell:last-child,
+  .cell:nth-child(8),
+  .cell:nth-child(7) {
+    border-bottom: none;
+  }
+/* For the cells with Xs and Os */
+  /* For cursors not allowed on cells containing X and O */
+  .cell.x,
+  .cell.circle {
+    cursor: not-allowed;
+  }
+  /* for the individual Xs and Os  */
+/* To create the Xs using CSS,  */
+
+/* Hover effect before setting an X or O item inside the cell */
+  
+  .cell.x::before,
+  .cell.x::after,
+  .cell.circle::before {
+    background-color: black;
+  }
+  
+  .board.x .cell:not(.x):not(.circle):hover::before,
+  .board.x .cell:not(.x):not(.circle):hover::after,
+  .board.circle .cell:not(.x):not(.circle):hover::before {
+    background-color: lightgrey;
+  }
+  
+  .cell.x::before,
+  .cell.x::after,
+  .board.x .cell:not(.x):not(.circle):hover::before,
+  .board.x .cell:not(.x):not(.circle):hover::after {
+    content: '';
+    position: absolute;
+    width: calc(var(--mark-size) * .15);
+    height: var(--mark-size);
+  }
+  
+  /* Creating the X element */
+  .cell.x::before,
+  .board.x .cell:not(.x):not(.circle):hover::before {
+    transform: rotate(45deg);
+  }
+  
+  .cell.x::after,
+  .board.x .cell:not(.x):not(.circle):hover::after {
+    transform: rotate(-45deg);
+  }
+  /* *********************************************** */
+/* To create the O's using CSS,  */
+  .cell.circle::before,
+  .cell.circle::after,
+  .board.circle .cell:not(.x):not(.circle):hover::before,
+  .board.circle .cell:not(.x):not(.circle):hover::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+  }
+  
+  .cell.circle::before,
+  .board.circle .cell:not(.x):not(.circle):hover::before {
+    width: var(--mark-size);
+    height: var(--mark-size);
+  }
+  
+  .cell.circle::after,
+  .board.circle .cell:not(.x):not(.circle):hover::after {
+    width: calc(var(--mark-size) * .7);
+    height: calc(var(--mark-size) * .7);
+    background-color: white;
+  }
+  /* ********************************************************* */
+  .winning-message {
+      display: none;
+      /* Position always in the centre of the screen  */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .9);
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 5rem;
+    /* To make the winning message and the button stacked on top each other */
+    flex-direction: column;
+  }
+  /* The button inside winning message */
+  .winning-message button {
+    font-size: 3rem;
+    background-color: white;
+    border: 1px solid black;
+    padding: .25em .5em;
+    cursor: pointer;
+  }
+  
+  .winning-message button:hover {
+    background-color: black;
+    color: white;
+    border-color: white;
+  }
+  
+  .winning-message.show {
+    display: flex;
+  }
